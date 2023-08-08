@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Apagar Dados</title>
+  <!-- Add Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    /* Add custom styles here if needed */
+  </style>
+</head>
+
+<body>
+  <div class="container mt-4">
+    <h2 class="mb-4 d-flex justify-content-center">Lista de Carros</h2>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Placa</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody id="tabelaFormularios">
+      </tbody>
+    </table>
+
+    <button type="button" class="btn btn-secondary" onclick="voltarParaIndex()">Voltar</button>
+    <button class="btn btn-danger" onclick="apagarDados()">Apagar Dados</button>
+  </div>
+
+
+  <!-- Add Bootstrap JS -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    function exibirListaFormularios() {
+      const listaFormularios = JSON.parse(localStorage.getItem('listaFormularios')) || [];
+
+      const tabelaFormularios = document.getElementById('tabelaFormularios');
+      tabelaFormularios.innerHTML = ''; // Limpa a tabela antes de atualizá-la
+
+      listaFormularios.forEach((formulario, index) => {
+        const row = tabelaFormularios.insertRow();
+        const nomeCell = row.insertCell();
+        const placaCell = row.insertCell();
+        const acaoCell = row.insertCell();
+
+        nomeCell.textContent = formulario.nome;
+        placaCell.textContent = formulario.placa;
+        acaoCell.innerHTML = `<button class="btn btn-sm btn-danger" onclick="apagarFormulario(${index})">Apagar</button>`;
+      });
+    }
+
+    function apagarFormulario(rowIndex) {
+      const tabelaFormularios = document.getElementById('tabelaFormularios');
+      tabelaFormularios.deleteRow(rowIndex);
+
+      const listaFormularios = JSON.parse(localStorage.getItem('listaFormularios')) || [];
+      listaFormularios.splice(rowIndex, 1);
+      localStorage.setItem('listaFormularios', JSON.stringify(listaFormularios));
+    }
+
+    function apagarDados() {
+      localStorage.removeItem('listaFormularios');
+      const tabelaFormularios = document.getElementById('tabelaFormularios');
+      tabelaFormularios.innerHTML = ''; // Limpa a tabela após apagar os dados
+    }
+
+    // Chama a função para exibir os dados ao carregar a página
+    exibirListaFormularios();
+
+    function voltarParaIndex() {
+      window.location.href = './index.html';
+    }
+
+  </script>
+</body>
+
+</html>

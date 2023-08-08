@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Formulários de Carros</title>
+  <!-- Incluir os arquivos CSS do Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    /* Efeito hover para linhas da tabela */
+    .table-hover tbody tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    /* Estilo para destacar o top 3 */
+    .top-3 {
+      background-color: #ffc107;
+      font-weight: bold;
+    }
+
+    /* Estilo para ocultar os filtros avançados e adicionar borda e border-radius */
+    .advanced-filters {
+      display: none;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="text-center">Lista de Formulários de Carros</h1>
+
+    <!-- Botão para exibir os filtros avançados -->
+    <div class="mb-3">
+      <button class="btn btn-primary" onclick="exibirFiltrosAvancados()">Busca avançada</button>
+    </div>
+
+    <!-- Filtros avançados (inicialmente ocultos) -->
+    <div class="advanced-filters" id="filtrosAvancados">
+      <!-- Filtro avançado para a ordenação -->
+      <div class="mb-3">
+        <label for="ordenacao" class="form-label">Ordenar por:</label>
+        <select class="form-select" id="ordenacao" onchange="exibirListaFormularios()">
+          <option value="medicaoTotal" selected>Medição Total (crescente)</option>
+        </select>
+      </div>
+
+      <!-- Filtro avançado para a coluna 'categoria' -->
+      <div class="mb-3">
+        <label for="filtroCategoria" class="form-label">Filtrar por Categoria:</label>
+        <select class="form-select" id="filtroCategoria" onchange="exibirListaFormularios()">
+          <option value="">Todos</option>
+          <option value="AR">AR</option>
+          <option value="FIXA">FIXA</option>
+          <option value="ROSCA">ROSCA</option>
+        </select>
+      </div>
+
+      <!-- Filtro avançado para a coluna 'Marca' -->
+      <div class="mb-3">
+        <label for="filtroMarca" class="form-label">Filtrar por Marca:</label>
+        <select class="form-select" id="filtroMarca" onchange="exibirListaFormularios()">
+          <option value="">Todos</option>
+          <option value="Aston Martin">Aston Martin</option>
+          <option value="Audi">Audi</option>
+          <option value="BMW">BMW</option>
+          <option value="Chery">Chery</option>
+          <option value="Chevrolet">Chevrolet</option>
+          <option value="Citroen">Citroen</option>
+          <option value="Ferrari">Ferrari</option>
+          <option value="Fiat">Fiat</option>
+          <option value="Ford">Ford</option>
+          <option value="Honda">Honda</option>
+          <option value="Hyundai">Hyundai</option>
+          <option value="JAC Motors">JAC Motors</option>
+          <option value="Jeep">Jeep</option>
+          <option value="Lamborghini">Lamborghini</option>
+          <option value="Lifan">Lifan</option>
+          <option value="McLaren">McLaren</option>
+          <option value="Mercedes-Benz">Mercedes-Benz</option>
+          <option value="Mitsubishi">Mitsubishi</option>
+          <option value="Nissan">Nissan</option>
+          <option value="Peugeot">Peugeot</option>
+          <option value="Porsche">Porsche</option>
+          <option value="Renault">Renault</option>
+          <option value="Subaru">Subaru</option>
+          <option value="Toyota">Toyota</option>
+          <option value="Volkswagen">Volkswagen</option>
+          <option value="Volvo">Volvo</option>
+        </select>
+      </div>
+
+      <!-- Filtro avançado para a coluna 'aro' -->
+      <div class="mb-3">
+        <label for="filtroAro" class="form-label">Filtrar por Aro:</label>
+        <select class="form-select" id="filtroAro" onchange="exibirListaFormularios()">
+          <option value="">Todos</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+          <option value="15">15</option>
+          <option value="16">16</option>
+          <option value="17">17</option>
+          <option value="18">18</option>
+          <option value="19">19</option>
+          <option value="20">20</option>
+        </select>
+      </div>
+    </div>
+
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Carro</th>
+          <th>Placa</th>
+          <th>Marca</th>
+          <th>Categoria</th>
+          <th>Aro</th>
+          <th>Medição Dianteira</th>
+          <th>Medição Traseira</th>
+          <th>Medição Total</th>
+        </tr>
+      </thead>
+      <tbody id="tabelaCorpo">
+        <!-- Os formulários serão adicionados aqui dinamicamente -->
+      </tbody>
+    </table>
+    <div class="mb-3">
+    <button type="button" class="btn btn-secondary" onclick="voltarParaIndex()">Voltar</button>
+</div>
+  </div>
+  <!-- Incluir os arquivos JavaScript do Bootstrap e do jQuery (necessário para alguns componentes do Bootstrap) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+  <script>
+    // Função para exibir os filtros avançados
+    function exibirFiltrosAvancados() {
+      const advancedFilters = document.getElementById('filtrosAvancados');
+      advancedFilters.style.display = (advancedFilters.style.display === 'none') ? 'block' : 'none';
+    }
+
+    // Função para exibir a lista de formulários
+    function exibirListaFormularios() {
+      // Recuperar a lista de formulários do localStorage
+      const listaFormularios = JSON.parse(localStorage.getItem('listaFormularios')) || [];
+
+      // Obter a referência ao corpo da tabela
+      const tabelaCorpo = document.getElementById('tabelaCorpo');
+
+      // Limpar o conteúdo da tabela (caso haja algum)
+      tabelaCorpo.innerHTML = '';
+
+      // Obter o valor selecionado no filtro de ordenação
+      const ordenacao = document.getElementById('ordenacao').value;
+
+      // Obter os valores selecionados nos filtros de categoria e aro
+      const filtroCategoria = document.getElementById('filtroCategoria').value;
+      const filtroMarca = document.getElementById('filtroMarca').value;
+      const filtroAro = document.getElementById('filtroAro').value;
+
+      // Filtrar a lista de formulários com base nos valores selecionados nos filtros
+      const listaFiltrada = listaFormularios.filter((formulario) => {
+        if (filtroCategoria && formulario.categoria !== filtroCategoria) {
+          return false;
+        }
+
+        if (filtroMarca && formulario.marca !== filtroMarca) {
+          return false;
+        }
+
+        if (filtroAro && formulario.aro !== filtroAro) {
+          return false;
+        }
+
+        return true;
+      });
+
+      // Ordenar a lista de formulários com base na opção de ordenação escolhida
+      listaFiltrada.sort((a, b) => a[ordenacao] - b[ordenacao]);
+
+      // Adicionar os formulários filtrados e ordenados à tabela
+      listaFiltrada.forEach((formulario, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${formulario.nome}</td>
+          <td>${formulario.carro}</td>
+          <td>${formulario.placa}</td>
+          <td>${formulario.marca}</td>
+          <td>${formulario.categoria}</td>
+          <td>${formulario.aro}</td>
+          <td>${formulario.medicaoDianteira}</td>
+          <td>${formulario.medicaoTraseira}</td>
+          <td>${formulario.medicaoTotal}</td>
+        `;
+
+        // Adicionar a classe "top-3" para as três primeiras linhas
+        if (index < 3) {
+          row.classList.add('top-3');
+        }
+
+        tabelaCorpo.appendChild(row);
+      });
+    }
+
+    // Chamar a função para exibir a lista de formulários assim que a página for carregada
+    exibirListaFormularios();
+
+    function voltarParaIndex() {
+       window.location.href = './index.html';
+     }
+    
+  </script>
+
+</body>
+
+</html>
+</script>
+</body>
+
+</html>

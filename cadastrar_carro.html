@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulário de Carros</title>
+  <!-- Incluir os arquivos CSS do Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+    <div class="container">
+      <h1 class="text-center">Formulário de Carros</h1>
+    </div>
+    <form id="meuFormulario">
+      <div class="row mb-3">
+        <div class="col">
+          <label for="nome" class="form-label">Nome:</label>
+          <input type="text" class="form-control" id="nome" oninput="this.value = this.value.toUpperCase()" required>
+          <span class="campo-vazio-msg">Este campo é obrigatório.</span>
+        </div>
+        <div class="col">
+          <label for="carro" class="form-label">Carro:</label>
+          <input type="text" class="form-control" id="carro" oninput="this.value = this.value.toUpperCase()" required>
+          <span class="campo-vazio-msg">Este campo é obrigatório.</span>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <label for="placa" class="form-label">Placa:</label>
+          <input type="text" class="form-control" id="placa" oninput="this.value = this.value.toUpperCase()" required>
+          <span class="campo-vazio-msg">Este campo é obrigatório.</span>
+        </div>
+        <div class="col">
+          <label for="aro" class="form-label">Marca:</label>
+          <select class="form-select" id="marca">
+            <option value="Aston Martin">Aston Martin</option>
+            <option value="Audi">Audi</option>
+            <option value="BMW">BMW</option>
+            <option value="Chery">Chery</option>
+            <option value="Chevrolet">Chevrolet</option>
+            <option value="Citroen">Citroen</option>
+            <option value="Ferrari">Ferrari</option>
+            <option value="Fiat">Fiat</option>
+            <option value="Ford">Ford</option>
+            <option value="Honda">Honda</option>
+            <option value="Hyundai">Hyundai</option>
+            <option value="JAC Motors">JAC Motors</option>
+            <option value="Jeep">Jeep</option>
+            <option value="Lamborghini">Lamborghini</option>
+            <option value="Lifan">Lifan</option>
+            <option value="McLaren">McLaren</option>
+            <option value="Mercedes-Benz">Mercedes-Benz</option>
+            <option value="Mitsubishi">Mitsubishi</option>
+            <option value="Nissan">Nissan</option>
+            <option value="Peugeot">Peugeot</option>
+            <option value="Porsche">Porsche</option>
+            <option value="Renault">Renault</option>
+            <option value="Subaru">Subaru</option>
+            <option value="Toyota">Toyota</option>
+            <option value="Volkswagen">Volkswagen</option>
+            <option value="Volvo">Volvo</option>
+          </select>
+        </div>
+      </div>
+  </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col">
+      <label for="categoria" class="form-label">Categoria:</label>
+      <select class="form-select" id="categoria">
+        <option value="AR">AR</option>
+        <option value="FIXA">FIXA</option>
+        <option value="ROSCA">ROSCA</option>
+      </select>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col">
+      <label for="aro" class="form-label">Aro:</label>
+      <select class="form-select" id="aro">
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="20">20</option>
+      </select>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col">
+      <label for="medicaoDianteira" class="form-label">Medição Dianteira:</label>
+      <input type="number" class="form-control" id="medicaoDianteira" onchange="calcularMedicaoTotal()" required>
+      <span class="campo-vazio-msg">Este campo é obrigatório.</span>
+    </div>
+    <div class="col">
+      <label for="medicaoTraseira" class="form-label">Medição Traseira:</label>
+      <input type="number" class="form-control" id="medicaoTraseira" onchange="calcularMedicaoTotal()" required>
+      <span class="campo-vazio-msg">Este campo é obrigatório.</span>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col">
+      <label for="medicaoTotal" class="form-label">Medição Total:</label>
+      <input type="number" class="form-control" id="medicaoTotal" readonly>
+    </div>
+  </div>
+  <div class="d-flex justify-content-end">
+    <button type="button" class="btn btn-secondary float-left" onclick="voltarParaIndex()">Voltar</button>
+    <button type="submit" class="btn btn-primary" onclick="verificarCampos(event)">Salvar</button><br>
+  </div>
+  </form>
+  </div>
+  <!-- Incluir os arquivos JavaScript do Bootstrap e do jQuery (necessário para alguns componentes do Bootstrap) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+  <!-- Script para calcular a medição total -->
+  <script>
+    function verificarCampos(event) {
+      event.preventDefault();
+
+      const requiredFields = document.querySelectorAll('#meuFormulario [required]');
+
+      // Remover a classe de estilo e a mensagem de erro dos campos antes de verificar novamente
+      requiredFields.forEach((campo) => {
+        campo.classList.remove('campo-vazio');
+        const mensagemErro = campo.parentNode.querySelector('.campo-vazio-msg');
+        mensagemErro.style.display = 'none';
+      });
+
+      let camposPreenchidos = true;
+      requiredFields.forEach((campo) => {
+        if (!campo.value.trim()) {
+          camposPreenchidos = false;
+          campo.classList.add('campo-vazio');
+          const mensagemErro = campo.parentNode.querySelector('.campo-vazio-msg');
+          mensagemErro.style.display = 'block';
+        }
+      });
+
+      if (camposPreenchidos) {
+        salvarFormulario();
+      } else {
+        console.log('Preencha todos os campos obrigatórios antes de salvar o formulário.');
+      }
+    }
+
+     function voltarParaIndex() {
+       window.location.href = './index.html';
+     }
+
+    function calcularMedicaoTotal() {
+      const medicaoDianteira = parseFloat(document.getElementById('medicaoDianteira').value) || 0;
+      const medicaoTraseira = parseFloat(document.getElementById('medicaoTraseira').value) || 0;
+      const medicaoTotal = (medicaoDianteira + medicaoTraseira) / 2;
+      document.getElementById('medicaoTotal').value = medicaoTotal.toFixed(2);
+    }
+
+    function salvarFormulario() {
+      const nome = document.getElementById('nome').value;
+      const carro = document.getElementById('carro').value;
+      const placa = document.getElementById('placa').value;
+      const marca = document.getElementById('marca').value;
+      const categoria = document.getElementById('categoria').value;
+      const aro = document.getElementById('aro').value;
+      const medicaoDianteira = parseFloat(document.getElementById('medicaoDianteira').value) || 0;
+      const medicaoTraseira = parseFloat(document.getElementById('medicaoTraseira').value) || 0;
+      const medicaoTotal = parseFloat(document.getElementById('medicaoTotal').value) || 0;
+
+      const formulario = {
+        nome: nome,
+        carro: carro,
+        placa: placa,
+        marca: marca,
+        categoria: categoria,
+        aro: aro,
+        medicaoDianteira: medicaoDianteira,
+        medicaoTraseira: medicaoTraseira,
+        medicaoTotal: medicaoTotal
+      };
+
+      // Recuperar a lista de formulários existentes no localStorage
+      let listaFormularios = JSON.parse(localStorage.getItem('listaFormularios')) || [];
+
+      // Adicionar o novo formulário à lista
+      listaFormularios.push(formulario);
+
+      // Salvar a lista atualizada no localStorage
+      localStorage.setItem('listaFormularios', JSON.stringify(listaFormularios));
+
+      // Redirecionar para a outra tela (por exemplo, tela de exibição dos formulários)
+      window.location.href = './lista_carros.html';
+    }
+  </script>
+  <style>
+    .campo-vazio {
+      border: 2px solid red;
+      /* Exemplo: realce em vermelho */
+    }
+
+    .campo-vazio-msg {
+      color: red;
+      /* Cor da mensagem de erro */
+      display: none;
+      /* Esconder a mensagem de erro inicialmente */
+    }
+  </style>
+</body>
+
+</html>
